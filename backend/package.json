@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "dist/server-pg.js",
+  "scripts": {
+    "dev": "ts-node server-pg.ts",
+    "build": "tsc",
+    "start": "node dist/server-pg.js"
+  },
+  "dependencies": {
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "ts-node": "^10.0.0",
+    "@types/node": "^20.9.0",
+    "@types/pg": "^8.10.1"
+  }
+}

@@ -1,0 +1,44 @@
+# --- Global ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+.DS_Store
+dist/
+coverage/
+
+# --- Backend ---
+/backend/node_modules
+/backend/package-lock.json
+/backend/.env
+/backend/*.env.local
+/backend/*.env.*.local
+/backend/build
+/backend/dist
+
+# --- Frontend ---
+/frontend/node_modules
+/frontend/package-lock.json
+/frontend/.next
+/frontend/out
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.*.local
+/frontend/build
+/frontend/dist
+
+# --- Cypress (frontend) ---
+/frontend/cypress/videos/
+/frontend/cypress/screenshots/
+/frontend/cypress/reports/
+
+# --- TypeScript ---
+*.tsbuildinfo
+
+# --- System / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo

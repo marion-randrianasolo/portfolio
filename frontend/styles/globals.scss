@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------
+   Base
+------------------------------------------------ */
+body {
+  @apply bg-white text-gray-800 antialiased;
+}
+
+/* ------------------------------------------------
+   Titres de section
+------------------------------------------------ */
+.section-title {
+  @apply text-3xl md:text-4xl font-extrabold text-slate-900 text-center tracking-tight;
+}
+.section-sub,
+.section-subtitle {
+  @apply mt-2 text-center text-slate-500;
+}
+
+/* ------------------------------------------------
+   Animations
+------------------------------------------------ */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { opacity: 0; animation: fadeInUp .6s ease-out forwards; }
+.reveal-on-scroll { opacity: 0; transform: translateY(8px); transition: opacity .6s, transform .6s; }
+.reveal-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+/* ------------------------------------------------
+   Timeline (ligne centrale + points)
+------------------------------------------------ */
+.timeline { @apply relative; }
+.timeline__line {
+  @apply hidden sm:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-0.5
+         bg-gradient-to-b from-slate-200 via-slate-300 to-slate-200;
+}
+.timeline__dot {
+  @apply hidden sm:block absolute left-1/2 -translate-x-1/2 h-4 w-4 rounded-full
+         bg-blue-600 ring-4 ring-blue-200;
+}
+/* Variante verte (Formation) */
+.timeline__dot--green  { @apply bg-emerald-600 ring-emerald-200; }
+.timeline__line--green { @apply bg-gradient-to-b from-emerald-100 via-emerald-300 to-emerald-100; }
+
+/* ------------------------------------------------
+   Cartes génériques + hover “lift”
+------------------------------------------------ */
+.card {
+  @apply bg-white border rounded-xl shadow-sm transition-all duration-200;
+  transform: translateY(0);
+}
+.card--hover:hover {
+  transform: translateY(-4px);
+  @apply shadow-md;
+}
+/* Anneaux (rings) par section */
+.card--ring         { @apply hover:ring-2 hover:ring-brand-300; }
+.card--ring-blue    { @apply hover:ring-2 hover:ring-blue-300; }
+.card--ring-green   { @apply hover:ring-2 hover:ring-emerald-300; }
+
+/* ---- Level card (hover lift) ---- */
+.level-card {
+  @apply rounded-xl transition-all duration-200 shadow-sm;
+  transform: translateY(0);
+}
+.level-card:hover {
+  transform: translateY(-3px);
+  @apply shadow-md;
+}
+
+/* Progress bar */
+.progress-track { @apply h-2 rounded bg-slate-200 overflow-hidden; }
+.progress-fill  { @apply h-full bg-brand-500 transition-[width,filter,transform] duration-500; }
+/* Petit effet au hover du bandeau */
+.level-card:hover .progress-fill {
+  filter: saturate(1.15);
+  transform: translateZ(0);
+}
+
+/* ------------------------------------------------
+   Project Card (si tu l’utilises en classe utilitaire)
+------------------------------------------------ */
+.project-card { @apply relative overflow-hidden rounded-2xl shadow-lg border border-slate-200 bg-white; }
+.project-card__img { @apply w-full h-64 md:h-72 object-cover transition-transform duration-500; }
+.project-card:hover .project-card__img { transform: scale(1.05); }
+.project-card__overlay { @apply absolute inset-0 bg-black/40; }
+.project-card__panel   { @apply absolute bottom-4 left-4 right-4 rounded-xl bg-black/70 backdrop-blur p-4 text-white; }
+
+/* ------------------------------------------------
+   Flip cards (centres d’intérêts)
+------------------------------------------------ */
+.flip-card { perspective: 1000px; }
+.flip-card__inner { position: relative; transform-style: preserve-3d; transition: transform .6s; }
+.flip-card:hover .flip-card__inner { transform: rotateY(180deg); }
+.flip-card__face {
+  @apply absolute inset-0 rounded-xl border;
+  backface-visibility: hidden;
+}
+.flip-card__back {
+  @apply text-white bg-pink-600 border-pink-100;
+  transform: rotateY(180deg);
+}
+
+/* ------------------------------------------------
+   Chips (Compétences) – bleus/sky, pas orange
+------------------------------------------------ */
+.chip {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-sm border transition-all duration-200;
+  transform: translateY(0);
+}
+.chip--skill {
+  @apply bg-sky-50 text-sky-800 border-sky-200;
+}
+.chip--skill:hover {
+  @apply bg-white text-sky-900 border-sky-300 shadow-md;
+  transform: translateY(-2px);
+}
+
+/* ------------------------------------------------
+   Section card (fond doux optionnel)
+------------------------------------------------ */
+.section-card {
+  @apply rounded-xl bg-gradient-to-b from-slate-50 to-white border border-slate-200/70 shadow-[0_6px_24px_rgba(15,23,42,.06)];
+}
+
+/* ------------------------------------------------
+   Boutons & Badges
+------------------------------------------------ */
+.btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium transition; }
+.btn-primary   { @apply bg-brand-600 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-300; }
+.btn-secondary { @apply bg-white text-slate-700 border border-slate-300 hover:bg-slate-50; }
+.btn-danger    { @apply bg-red-600 text-white hover:bg-red-700; }
+
+.badge        { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium; }
+.badge-neutral{ @apply bg-slate-100 text-slate-700; }
+.badge-brand  { @apply bg-brand-50  text-brand-700; }
+.badge-accent { @apply bg-accent-50 text-accent-700; }
+
+/* ------------------------------------------------
+   Navbar (scroll-spy) — highlight en brand (orange doux)
+------------------------------------------------ */
+.nav-link         { @apply cursor-pointer transition-colors text-slate-600 hover:text-brand-500; }
+.nav-link--active { @apply text-brand-600 font-semibold; }
+
+/* ------------------------------------------------
+   Utilitaires
+------------------------------------------------ */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.whitespace-prewrap { white-space: pre-wrap; }
