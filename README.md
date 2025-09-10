@@ -83,3 +83,14 @@ Ce projet offre une base solide pour apprendre plusieurs technologies :
 > **Remarque sur les tests** : les versions précédentes du projet incluaient la configuration d’un framework de tests end‑to‑end (Cypress). Afin de simplifier l’installation et d’éviter des conflits de versions avec votre environnement Node actuel, cette version PostgreSQL n’intègre plus cette dépendance. Vous êtes libre de l’ajouter ultérieurement si vous souhaitez expérimenter les tests automatisés.
 
 En résumé, cette version PostgreSQL du portfolio propose une API robuste et une interface moderne que vous pouvez enrichir au fil de votre apprentissage. Vous pouvez par exemple ajouter une authentification, des catégories de projets ou encore intégrer une documentation Swagger pour l’API.
+
+
+add glow, etc . 		: done
+level logic 	 		: done
+level show levels etc 	: done
+bees					: done
+auth for admin page     :
+dark mode				: 
+appear animation while scroll : 
+contact page 			:
+fr/eng version			:
