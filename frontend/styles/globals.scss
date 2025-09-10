@@ -121,6 +121,19 @@ body {
   transform: translateY(-2px);
 }
 
+/* -----------------------------------------------------
+   Ajout pour l’effet de lift des lignes de langue
+----------------------------------------------------- */
+.language-row {
+  @apply p-3 rounded-lg transition-all duration-200;
+  transform: translateY(0);
+}
+.language-row:hover {
+  transform: translateY(-4px);
+  @apply shadow-md;
+}
+
+
 /* ------------------------------------------------
    Section card (fond doux optionnel)
 ------------------------------------------------ */

@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../components/Layout';
 import ProjectCard from '../components/ProjectCard';
+import AnimatedIconsBackground from '../components/AnimatedIconsBackground'
 
 interface PersonalInfo { full_name?: string; title?: string; summary?: string; email?: string; phone?: string; location?: string; photo_url?: string; }
 interface Experience   { id: number; title: string; company?: string; location?: string; start_date?: string; end_date?: string; description?: string; category?: string; }
@@ -175,7 +176,7 @@ export default function CV() {
     };
   }, [experiences]);
 
-  // Niveau: Junior (0-5), Confirmé (5-7), Sénior (7+)
+  // Niveau : Junior (0-5), Confirmé (5-7), Sénior (7+)
   const levelInfo = useMemo(() => {
     const y = totalYears;
     if (y < 5) {
@@ -186,6 +187,11 @@ export default function CV() {
       return { label: 'Sénior', progressPct: 100 };
     }
   }, [totalYears]);
+
+  // Répartition de la progression sur trois segments : Junior (0–5 ans), Confirmé (5–7 ans), Sénior (7+ ans).
+  const seg1Pct = totalYears < 5 ? (totalYears / 5) * 100 : 100;
+  const seg2Pct = totalYears > 5 ? Math.min(((totalYears - 5) / 2) * 100, 100) : 0;
+  const seg3Pct = totalYears > 7 ? 100 : 0;
 
   // Intersection observer
   useEffect(() => {
@@ -217,22 +223,27 @@ export default function CV() {
   return (
     <Layout>
       {/* Header */}
-      <div className="max-w-5xl mx-auto pt-6 pb-4">
-        <h1 className="section-title">Curriculum Vitae</h1>
-        {personal && (
-          <div className="mt-6 flex flex-col items-center text-center">
-            {personal.photo_url && (
-              <img src={personal.photo_url} alt="" className="w-28 h-28 rounded-full object-cover ring-4 ring-slate-100" />
-            )}
-            <h2 className="mt-4 text-2xl font-bold">{personal.full_name}</h2>
-            {personal.title && <p className="text-sm tracking-wide text-slate-600">{personal.title}</p>}
-            {personal.summary && (
-              <p className="mt-3 max-w-3xl text-slate-600 whitespace-prewrap leading-relaxed">
-                {personal.summary}
-              </p>
-            )}
-          </div>
-        )}
+      <div className="relative w-full py-8 overflow-hidden">
+        {/* Fond animé qui occupe toute la surface du bandeau */}
+        <AnimatedIconsBackground />
+        {/* Contenu textuel centré */}
+        <div className="relative z-10 pointer-events-none max-w-5xl mx-auto pt-6 pb-4">
+          <h1 className="section-title">Curriculum Vitae</h1>
+          {personal && (
+            <div className="mt-6 flex flex-col items-center text-center">
+              {personal.photo_url && (
+                <img src={personal.photo_url} alt="" className="w-28 h-28 rounded-full object-cover ring-4 ring-slate-100" />
+              )}
+              <h2 className="mt-4 text-2xl font-bold">{personal.full_name}</h2>
+              {personal.title && <p className="text-sm tracking-wide text-slate-600">{personal.title}</p>}
+              {personal.summary && (
+                <p className="mt-3 max-w-3xl text-slate-600 whitespace-prewrap leading-relaxed">
+                  {personal.summary}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Sticky nav */}
@@ -257,19 +268,55 @@ export default function CV() {
         </ul>
       </nav>
 
-      {/* Bandeau niveau */}
+       {/* Bandeau niveau */}
       <div className="max-w-5xl mx-auto my-8 level-card bg-gradient-to-r from-brand-50 via-white to-brand-50 p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+        {/* libellé du niveau */}
         <div className="flex items-center gap-3">
           <p className="text-xs text-slate-500">Niveau</p>
           <span className="badge badge-neutral">{levelInfo.label}</span>
         </div>
-        <div className="flex-1">
+        {/*
+          Progression vers les différents paliers (Junior, Confirmé, Sénior).
+          L’aperçu principal affiche le niveau courant (badge), la jauge du
+          palier actuel et le nombre d’années d’expérience.  Au survol du
+          bandeau, une infobulle apparaît : elle contient une barre générale
+          divisée en trois segments (Junior : 0–5 ans, Confirmé : 5–7 ans,
+          Sénior : 7+ ans) et indique la progression réelle dans chacun de
+          ces segments.
+        */}
+        <div className="flex-1 relative group">
+          {/* Jauge du palier courant : progression dans le niveau actuel (ex : Junior) */}
           <div className="progress-track">
             <div className="progress-fill" style={{ width: `${levelInfo.progressPct}%` }} />
           </div>
+          {/* Années d’XP sous la jauge */}
           <p className="text-xs text-slate-500 mt-1">
             {totalYears > 0 ? `${pretty} d’XP` : 'Pas de données'}
           </p>
+          {/* Infobulle contenant la barre générale et les paliers ; affichée au survol */}
+          <div className="absolute left-0 mt-3 w-full bg-white/95 border border-slate-200 rounded-lg shadow-sm text-xs p-3 opacity-0 pointer-events-none transition-opacity duration-150 group-hover:opacity-100">
+            {/* Barre générale avec progression répartie sur les trois paliers */}
+            <div className="flex w-full rounded-full overflow-hidden border border-brand-200">
+              {/* Segment 1 : Junior (0–5 ans) */}
+              <div className="relative flex-1 h-2 bg-brand-50">
+                <div className="absolute top-0 left-0 h-full bg-brand-500" style={{ width: `${seg1Pct}%` }} />
+              </div>
+              {/* Segment 2 : Confirmé (5–7 ans) */}
+              <div className="relative flex-1 h-2 bg-brand-50">
+                <div className="absolute top-0 left-0 h-full bg-brand-500" style={{ width: `${seg2Pct}%` }} />
+              </div>
+              {/* Segment 3 : Sénior (7+ ans) */}
+              <div className="relative flex-1 h-2 bg-brand-50">
+                <div className="absolute top-0 left-0 h-full bg-brand-500" style={{ width: `${seg3Pct}%` }} />
+              </div>
+            </div>
+            {/* Libellés des segments */}
+            <div className="flex text-xs mt-1 text-slate-600">
+              <span className="flex-1 text-center">Junior</span>
+              <span className="flex-1 text-center">Confirmé</span>
+              <span className="flex-1 text-center">Sénior</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -361,18 +408,22 @@ export default function CV() {
       {languages.length>0 && (
         <section id="languages" ref={langRef} data-section="languages" className="py-12">
           <h3 className="section-title"><FontAwesomeIcon icon={faLanguage} className="text-purple-600 mr-2" />Langues</h3>
-          <div className="max-w-4xl mx-auto mt-8 space-y-5">
+          <div className="max-w-2xl mx-auto mt-8 space-y-5">
             {languages.map((l) => {
               const v = (l.level || '').toLowerCase();
-              const w = v.includes('native') ? 100 : v.includes('fluent') || v.includes('courant') ? 80 : v.includes('inter') ? 60 : 40;
+              const w =
+                v.includes('native') ? 100 :
+                v.includes('fluent') || v.includes('courant') ? 100 :
+                v.includes('inter') ? 60 : 40;
+
               return (
-                <div key={l.id}>
+                <div key={l.id} className="language-row">
                   <div className="flex justify-between text-sm mb-1">
                     <span className="font-medium text-purple-800">{l.name}</span>
                     {l.level && <span className="text-purple-600">{l.level}</span>}
                   </div>
                   <div className="h-2.5 w-full rounded-full bg-purple-100">
-                    <div className="h-2.5 rounded-full bg-purple-500" style={{width:`${w}%`}} />
+                    <div className="h-2.5 rounded-full bg-purple-500" style={{ width: `${w}%` }} />
                   </div>
                 </div>
               );
@@ -401,16 +452,31 @@ export default function CV() {
       )}
 
       {/* PROJETS */}
-      {projects.length>0 && (
+      {projects.length > 0 && (
         <section id="projects" ref={prjRef} data-section="projects" className="py-12">
           <h3 className="section-title">Projets</h3>
-          <div className="max-w-5xl mx-auto mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map(p => (
-              <ProjectCard key={p.id} project={p} />
+          <div
+            className={
+              "max-w-5xl mx-auto mt-8 grid gap-6 " +
+              (projects.length === 1
+                ? "grid-cols-1 place-items-center"
+                : "grid-cols-1 md:grid-cols-2")
+            }
+          >
+            {projects.map((p) => (
+              <div
+                key={p.id}
+                /* on limite la largeur quand il n’y a qu’une carte : max-w-xl (36 rem) sur petits écrans,
+                   et max-w-lg (32 rem) à partir du breakpoint md */
+                className={projects.length === 1 ? "w-full sm:max-w-xl md:max-w-lg" : ""}
+              >
+                <ProjectCard project={p} />
+              </div>
             ))}
           </div>
         </section>
       )}
+
 
       {/* CENTRES D'INTÉRÊTS */}
       {interests.length > 0 && (
